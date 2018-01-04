@@ -41,17 +41,23 @@ class dm_format():
         self.colcnt += 1
         return ret
 
-    def flt_to_int():
-        pass
+    def flt_to_int(self, data_col):
+        return round(data_col)
 
     def num_to_str():
         pass
 
     def sas_date():
-        pass
+        temp = self._manage_flt_na_(data_col)
+        try:
+            ret = self.pd.to_timedelta(temp, unit = 'D') + self.pd.datetime(1960,1,1)
+        return ret
 
-    def sas_time():
-        pass
+    def sas_time(self, data_col):
+        temp = self._manage_flt_na_(data_col)
+        try:
+            ret = self.pd.to_timedelta(temp, unit = 's') + self.pd.datetime(1960,1,1)
+        return ret
 
     def normalized_flt(self, data_col, ignore_na = False):
         if not ignore_na:
