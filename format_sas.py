@@ -72,10 +72,6 @@ class dm_format():
         self.colcnt += 1
         return ret
 
-    def log_trans_flt(self, data_col, base=10):
-        #temp = self._manage_flt_na_(data_col)
-        pass
-
     def one_digit_trans_flt(self, data_col):
         temp = self._manage_flt_na_(data_col)
         factor = round(self.np.mean(self.np.log10(temp)))
@@ -91,3 +87,5 @@ class dm_format():
         ret_name = 'cut_'+data_col.name
         self.well_ret[ret_name] = ret
         return ret
+
+    def
