@@ -42,22 +42,32 @@ class dm_format():
         return ret
 
     def flt_to_int(self, data_col):
+        self.well_ret['int_'+ data_col.name] = round(data_col)
+        self.colcnt += 1
         return round(data_col)
 
-    def num_to_str():
-        pass
+    def str_to_flt(self, data_col):
+        ret = data_col.astype('float64')
+        self.well_ret['flt_'+data_col.name] = ret
+        self.colcnt += 1
+        return ret
 
-    def sas_date():
+    def sas_date(self, data_col):
         temp = self._manage_flt_na_(data_col)
         try:
             ret = self.pd.to_timedelta(temp, unit = 'D') + self.pd.datetime(1960,1,1)
-        return ret
+            return ret
+        except:
+            raise Exception('Wrong sas_date format!')
+
 
     def sas_time(self, data_col):
         temp = self._manage_flt_na_(data_col)
         try:
             ret = self.pd.to_timedelta(temp, unit = 's') + self.pd.datetime(1960,1,1)
-        return ret
+            return ret
+        except:
+            raise Exception('Wrong sas_date format!')
 
     def normalized_flt(self, data_col, ignore_na = False):
         if not ignore_na:
@@ -77,7 +87,7 @@ class dm_format():
         factor = round(self.np.mean(self.np.log10(temp)))
         ret = temp/(10**factor)
         self.colcnt += 1
-        self.well_ret['cate_'+ ret.name] = ret
+        self.well_ret[ret.name+'_X'+str(factor)] = ret
         return ret
 
     def cut_to_group_flt(self, data_col, cutpoint=None,labels=None):
@@ -88,4 +98,6 @@ class dm_format():
         self.well_ret[ret_name] = ret
         return ret
 
-    def
+    def keep(self, data_col):
+        self.well_ret[data_col.name] = data_col
+        return data_col
