@@ -41,6 +41,16 @@ class dm_format():
         self.colcnt += 1
         return ret
 
+    def str_to_dummy(self, data_col, na_item=None):
+        if na_item:
+            temp = self._manage_char_na_(data_col, na_item)
+        else:
+            temp = data_col
+
+        ret = self.pd.get_dummies(temp,prefix=data_col.name)
+        self.well_ret = self.pd.concat([self.well_ret,ret], axis=1)
+        return ret
+
     def flt_to_int(self, data_col):
         self.well_ret['int_'+ data_col.name] = round(data_col)
         self.colcnt += 1
