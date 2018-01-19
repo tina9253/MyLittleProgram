@@ -6,7 +6,7 @@ class clf_dm_evaluation():
         self.clf = in_clf
 
     def conf_matrix(self, array, real_class):
-        return self.sklearn.metrics.confusion_matrix(self.clf.predict(array),real_class)
+        return self.sklearn.metrics.confusion_matrix(real_class, self.clf.predict(array))
 
     def predict_error(self, array, real_class):
         conf_matrix = self.conf_matrix(array,real_class)
@@ -29,10 +29,14 @@ class clf_dm_evaluation():
                                        'y_true_class': real_class,
                                        'y_prob_decile': self.pd.qcut(prob_positive,cut,labels=range(cut))})
         except:
-            pass
+            raise Exception("cannot cut")
 
         ret = self.pd.pivot_table(pd_df,
                                   values='y_true_class',
                                   index='y_prob_decile',
                                   aggfunc=lambda x:np.sum(x)/len(x))
+        return ret
+
+    def show_coef(self, array):
+        ret = pd.DataFrame({'Col_name':array.columns, 'Coef': self.clf.coef_[0]}).sort_values('Col_name', ascending=False)
         return ret
